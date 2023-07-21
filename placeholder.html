@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON</title>
+
+    <style> 
+
+    body{
+        background-color: #d3d6d7;
+    }
+
+   
+
+    #col1 {
+
+            background-color: black;
+            border-top-left-radius: 2%;
+            border-bottom-left-radius: 2%;
+            width: 48%;
+            height: 900px;
+            float: left;
+            margin-left: 2%;
+            margin-top: 2%;
+    }
+
+    #col2 {  
+            border-top-right-radius: 2%;
+            border-bottom-right-radius: 2%;
+            width: 48.00%;
+            height: 900px;
+            margin-top: 2%;
+            margin-right: 2%;
+            float: right;
+            
+    }
+
+    #inner{
+        border-radius: 4%;
+        background-color: white;
+        width: 60%;
+        height: 600px;
+        font-size: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 20%;
+        margin-top: 15%;
+        font-style: italic;
+    }
+
+    #card-container {
+        border-radius: 4%;
+        background-color: white;
+        width: 60%;
+        height: 600px;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-left: 20%;
+        margin-top: 15%;
+        font-style: italic;
+         
+    }
+        
+
+    #img {
+        width: 100%;
+        height: 100%;
+    }
+
+    #User{  
+        margin: 20px;
+        padding: 20px;
+    }
+
+    #User1 {
+        margin-left: 10%;
+    }
+
+    #forgot{
+        position: relative;
+        margin: 10px;
+        left: 60%;
+        font-size: 15px;
+    }
+
+    #save{
+        margin-left: 20%;
+        margin-top: 4%;
+        width: 60%;
+        height: 12%;
+    }
+
+    #sign {
+        font-size: 15px;
+        margin-left: 25%;
+    }
+
+    </style>
+
+</head>
+<body>
+
+    
+
+    <div id="col2">
+
+        <img id="img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5X6DWdtKixzXZXus34fs1QDIMyaYC0K-orQ&usqp=CAU" >
+    </div>
+
+     <div id="col1">
+    
+    <div id="inner">
+
+    <h1 style="text-align: center;">WELCOME !!</h1>
+    
+    <h3 style="text-align: center;">SIGN IN</h3>
+
+    <form id="myform">
+
+    <div id="User">
+        <label for="username">Username : </label>
+        <input type="text" id="username" name="username" placeholder="Enter your Username"   required>
+    </div>
+
+    <div id="User1">
+        <label for="password">Passworrd : </label>
+        <input type="text" id="password" name="password" placeholder="Enter your Password"  required> 
+    </div>
+<div id="forgot">
+    <a  href="">Forgot Password?</a>
+</div>
+
+
+    <button type="button" id="save" onclick="login()"  >Submit It</button>
+
+    <div id="sign">
+        <p>Don't have a account? <a href="">sign up</a></p>
+    </div>
+
+    <div id="result"></div>
+    </form>
+    
+
+  </div>
+
+  <div id="card-container" style="display: none;" >
+
+    <b>Identification :-</b>
+    <h5 id="id">ID : </h5>
+    <h5 id="name">NAME :</h5>
+    <h5 id="username">USERNAME :</h5>
+    <h5 id="email">EMAIL :</h5>
+    <h5 id="address">ADDRESS :</h3> 1
+    <h5 id="phone">PHONE :</h5>
+    <h5 id="website">WEBSITE :</h5>
+    <h5 id="company">COMPANY :</h5>
+    <h5 id="geo">GEO :</h5>
+
+    <button type="button" id="signout" onclick="logout()" style="height: 8%; width: 60%;">Log Out</button>
+
+</div>
+  
+</div>
+
+</form>
+
+</body>
+
+<script>
+
+let users = [];
+//let cardContainer = document.getElementById('card-container');
+
+fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response => response.json())
+    .then(data => {
+       users = data;
+       console.log(users);
+    })
+    .catch(error => console.error(error));
+   
+    function login()
+    {
+    // e.preventDefault(); 
+    document.getElementById('myform');
+    
+    username = document.getElementById("username").value;
+    password = document.getElementById("password").value; 
+
+    var flag =  false;
+
+    console.log(username);
+    console.log(password);
+
+    
+
+    for(var i=0; i<10; i++)
+    {
+        var user = users[i];
+    //const Uexists = users.find(user => user.email === username);    // array to find the email stored in object user to compare with username.
+   // const Pexists = users.find(user => user.username === password);
+   
+        if(user.email == username && user.username==password)
+        {
+            console.log("Username Exists");
+             
+            alert("Successfully Submited");
+
+            localStorage.setItem('data', JSON.stringify(user));
+
+            var store = localStorage.getItem('data');
+            if(store)
+            {
+                var parsedata = JSON.parse(store);
+            }
+            
+            flag=true;
+             
+            console.log(user);
+
+            document.getElementById('id').textContent = `ID : ${user.id}`
+            document.getElementById('name').textContent = `Name : ${user.name}` 
+            document.getElementById('username').textContent = `Username : ${user.username}`
+            document.getElementById('email').textContent = `Email : ${user.email} `;
+            document.getElementById('phone').textContent = `Contact : ${user.phone}`
+            document.getElementById('website').textContent = `Website : ${user.website}`
+            document.getElementById('geo').textContent = `catchPhrase : ${user.company.catchPhrase}`
+            document.getElementById('address').textContent = `Address -  street : ${user.address.street} ,  suite : ${user.address.suite}  , city : ${user.address.city} , zipcode : ${user.address.zipcode}`
+            document.getElementById('company').textContent = `Company - name : ${user.company.name}   catchPhrase : ${user.company.catchPhrase} , bs : ${user.company.bs}`
+            
+        
+         /*user.map(function(item)  {         
+            
+
+            const div = document.createElement('div');
+            const id = document.createElement('h3');
+            const email = document.createElement('h3');
+            const name = document.createElement('h3');
+            const username = document.createElement('h3');
+            const contact = document.createElement('h3');
+            const website = document.createElement('h3');
+            const catchPhrase = document.createElement('h3');
+            const address = document.createElement('h3');
+            const geo = document.createElement('h3');
+            const company = document.createElement('h3');
+
+            div.classList = 'card'
+            id.classList = 'id'
+            name.classList = 'name'
+            username.classList = 'username'
+            email.classList = 'email'
+            contact.classList = 'contact'
+            website.classList = 'website'
+            catchPhrase.classList = 'catchPhrase'
+            address.classList = 'address'
+            company.classList = 'geo'
+
+            
+            div.appendChild(name)
+            div.appendChild(username)
+            div.appendChild(email)
+            div.appendChild(address)
+            div.appendChild(contact)   
+            div.appendChild(website)  
+            div.appendChild(catchPhrase)
+            div.appendChild(geo)*/
+            
+            break;
+                    
+         }
+        }
+        if(flag){
+            
+            document.getElementById('inner').style.display="none";
+            document.getElementById('card-container').style.display="block";
+        }
+
+        else{
+            console.log("Username dose not exists");
+        }
+        
+    }
+
+    function logout(){
+
+        for(var i=0;i<10;i++){
+            var user = users[i];
+
+        localStorage.setItem('data', JSON.stringify(user));
+
+        var store = localStorage.removeItem('data');
+       
+    }
+        document.getElementById('inner').style.display='block';
+        document.getElementById('card-container').style.display='none';         
+    }       
+            
+</script>
+</html>
